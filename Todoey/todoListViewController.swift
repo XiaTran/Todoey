@@ -11,11 +11,14 @@ import UIKit
 class TodoListViewController: UITableViewController {
 
     var itemArray = ["task 1", "taks 2", "task 3"]
+    let defaults = UserDefaults.standard
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
     }
 
     //MARK - TableView Datasource Methods
@@ -53,6 +56,10 @@ class TodoListViewController: UITableViewController {
             //What will happen when user clicks button on UIAlert
             guard let text = textField.text else { return }
             self.itemArray.append(text)
+
+            //Save item in the array to the userDefaults
+            self.defaults.set(self.itemArray, forKey: "TodoListArray")
+
             self.tableView.reloadData()
 
         }
